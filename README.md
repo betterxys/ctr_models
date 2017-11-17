@@ -1,6 +1,12 @@
 # attentional_factorization_machine
 
-This is our implementation for the paper:
+
+>声明：这份代码来自大牛[Xiangnan He](https://github.com/hexiangnan)，readme也是源自he, 未曾改动， 本人只是down下来学习并尝试基于源代码尝试做出修改，所以这里的 NFM / AFM 可能会和paper上面的有出入，需要参考原始代码的可自行前往。
+向何老师致敬！
+
+
+
+Implementation for the paper:
 
 Jun Xiao, Hao Ye, Xiangnan He, Hanwang Zhang, Fei Wu and Tat-Seng Chua (2017). [Attentional Factorization Machines: Learning the Weight of Feature Interactions via Attention Networks](http://www.comp.nus.edu.sg/~xiangnan/papers/ijcai17-afm.pdf) IJCAI, Melbourne, Australia, August 19-25, 2017.
 

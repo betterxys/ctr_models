@@ -57,7 +57,7 @@ def parse_args():
                     help='Whether to perform batch normaization (0 or 1)')
     parser.add_argument('--activation', nargs='?', default='relu',
                     help='Which activation function to use for deep layers: relu, sigmoid, tanh, identity')
-    parser.add_argument('--early_stop', type=int, default=1,
+    parser.add_argument('--early_stop', type=int, default=0,
                     help='Whether to perform early stop (0 or 1)')
     return parser.parse_args()
 
@@ -146,10 +146,10 @@ class NeuralFM(BaseEstimator, TransformerMixin):
                     self.loss = tf.nn.l2_loss(tf.subtract(self.train_labels, self.out))
             elif self.loss_type == 'log_loss':
                 self.out = tf.sigmoid(self.out)
-                if self.lambda_bilinear > 0:
-                    self.loss = tf.contrib.losses.log_loss(self.out, self.train_labels, weight=1.0, epsilon=1e-07, scope=None) + tf.contrib.layers.l2_regularizer(self.lamda_bilinear)(self.weights['feature_embeddings'])  # regulizer
+                if self.lamda_bilinear > 0:
+                    self.loss = tf.contrib.losses.log_loss(self.out, self.train_labels, weights=1.0, epsilon=1e-07, scope=None) + tf.contrib.layers.l2_regularizer(self.lamda_bilinear)(self.weights['feature_embeddings'])  # regulizer
                 else:
-                    self.loss = tf.contrib.losses.log_loss(self.out, self.train_labels, weight=1.0, epsilon=1e-07, scope=None)
+                    self.loss = tf.contrib.losses.log_loss(self.out, self.train_labels, weights=1.0, epsilon=1e-07, scope=None)
 
             # Optimizer.
             if self.optimizer_type == 'AdamOptimizer':
@@ -334,7 +334,9 @@ if __name__ == '__main__':
     args = parse_args()
     data = DATA.LoadData(args.path, args.dataset, args.loss_type)
     if args.verbose > 0:
-        print("Neural FM: dataset=%s, hidden_factor=%d, dropout_keep=%s, layers=%s, loss_type=%s, pretrain=%d, #epoch=%d, batch=%d, lr=%.4f, lambda=%.4f, optimizer=%s, batch_norm=%d, activation=%s, early_stop=%d" 
+        print("Neural FM: dataset=%s, hidden_factor=%d, dropout_keep=%s, layers=%s,"
+              " loss_type=%s, pretrain=%d, #epoch=%d, batch=%d, lr=%.4f, lambda=%.4f,"
+              " optimizer=%s, batch_norm=%d, activation=%s, early_stop=%d"
               %(args.dataset, args.hidden_factor, args.keep_prob, args.layers, args.loss_type, args.pretrain, args.epoch, args.batch_size, args.lr, args.lamda, args.optimizer, args.batch_norm, args.activation, args.early_stop))
     activation_function = tf.nn.relu
     if args.activation == 'sigmoid':

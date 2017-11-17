@@ -541,8 +541,6 @@ def evaluate(args):
                           ao[_id][2], inter[_id][2], y_pred_afm[_id]))
 
 
-    
-
 if __name__ == '__main__':
     args = parse_args()
 
